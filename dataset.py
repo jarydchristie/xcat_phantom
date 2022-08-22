@@ -10,7 +10,7 @@ import os
 from PIL import Image
 import scipy.io as sio
 from torch.utils.data import Dataset, DataLoader
-from torchvision.utils import save_image
+#from torchvision.utils import save_image
 
 class MapDataset_input(Dataset):
     def __init__(self, input_root_dir):
@@ -75,6 +75,27 @@ class MapDataset_mask(Dataset):
         mask_image = np.fliplr(np.rot90(np.transpose(mask_mat_data),3))
         
         return mask_image
+
+class MapDataset_bodyMask(Dataset):
+    def __init__(self, bodyMask_root_dir):
+        self.bodyMask_root_dir = bodyMask_root_dir
+        self.bodyMask_list_files = os.listdir(self.bodyMask_root_dir)        
+
+    def __len__(self):
+        return len(self.bodyMask_list_files)
+
+    def __getitem__(self, index):
+        
+        bodyMask_img_file = self.bodyMask_list_files[index]
+        bodyMask_img_path = os.path.join(self.bodyMask_root_dir, bodyMask_img_file)        
+        
+        bodyMask_mat = sio.loadmat(bodyMask_img_path)
+        
+        bodyMask_mat_data = bodyMask_mat['bodyMask']
+        
+        bodyMask_image = np.fliplr(np.rot90(np.transpose(bodyMask_mat_data),3))
+        
+        return bodyMask_image 
 
 class MapDataset_organMap(Dataset):
     def __init__(self, organMap_root_dir):

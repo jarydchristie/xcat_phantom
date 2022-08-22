@@ -29,7 +29,7 @@ class Block(nn.Module):
 
 
 class Generator(nn.Module):
-    def __init__(self, in_channels=3, features=32):
+    def __init__(self, in_channels=1, features=32):
         super().__init__()
         self.initial_down = nn.Sequential(nn.Conv2d(in_channels, features, 7, 1, 3, bias = False, padding_mode="reflect"),
                                           nn.ReLU(0.2),)#a
